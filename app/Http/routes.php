@@ -17,4 +17,15 @@ Route::group(['middleware' => ['web']], function () {
         return view('welcome');
     });
 
+
+    /* CPNS */
+    Route::get('/cpns', function () {
+	    return view('welcome');
+	});
+	Route::get('/api/v1/cpns/getAll/', 'CPNSController@getAllCPNS');
+	Route::get('/api/v1/cpns/get/{nik}', 'CPNSController@getCPNS');
+	Route::post('/api/v1/cpns/add', 'CPNSController@addCPNS');
+	Route::post('/api/v1/cpns/get/{nik}', 'CPNSController@editCPNS');
+	Route::delete('/api/v1/cpns/get/{nik}', 'CPNSController@deleteCPNS');
+
 });
