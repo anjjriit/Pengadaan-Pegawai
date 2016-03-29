@@ -24,7 +24,7 @@ class CPNSController extends Controller
             'ipk'     				=> 'required|numeric',
             'hasil_tes'			  	=> 'required|numeric',
             'jurusan'     			=> 'required',
-            'pendidikan'     	=> 'required'
+            'pendidikan'     	    => 'required'
         );
         return Validator::make(Input::all(), $rules);
 	}

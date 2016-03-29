@@ -23,9 +23,11 @@ DROP TABLE IF EXISTS `alokasi`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `alokasi` (
-  `cpns_nik` bigint(20) unsigned NOT NULL,
+  `cpns_nik` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `divisi` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `kebutuhan` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`cpns_nik`,`divisi`,`kebutuhan`),
   KEY `alokasi_divisi_foreign` (`divisi`),
   KEY `alokasi_kebutuhan_foreign` (`kebutuhan`),
@@ -52,7 +54,7 @@ DROP TABLE IF EXISTS `cpns`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cpns` (
-  `nik` bigint(20) unsigned NOT NULL,
+  `nik` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `nama` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `alamat` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `no_telp` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -62,6 +64,9 @@ CREATE TABLE `cpns` (
   `hasil_tes` double(6,4) NOT NULL,
   `jurusan` int(10) unsigned NOT NULL,
   `pendidikan_akhir` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`nik`),
   UNIQUE KEY `cpns_nik_unique` (`nik`),
   KEY `cpns_jurusan_foreign` (`jurusan`),
   KEY `cpns_pendidikan_akhir_foreign` (`pendidikan_akhir`),
@@ -76,6 +81,7 @@ CREATE TABLE `cpns` (
 
 LOCK TABLES `cpns` WRITE;
 /*!40000 ALTER TABLE `cpns` DISABLE KEYS */;
+INSERT INTO `cpns` VALUES ('3578091503950002','Ivan Andrianto2','MJP3D17','083857147117','andrianto.ivan@yahoo.co.id','images/foto_ivan',3.000,50.0000,1,1,'2016-03-29 02:38:57','2016-03-28 19:39:25');
 /*!40000 ALTER TABLE `cpns` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,6 +101,8 @@ CREATE TABLE `divisi` (
   `syarat_pendidikan` int(10) unsigned NOT NULL,
   `syarat_jurusan` int(10) unsigned NOT NULL,
   `kebutuhan_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`nama_divisi`,`kebutuhan_id`),
   KEY `divisi_syarat_pendidikan_foreign` (`syarat_pendidikan`),
   KEY `divisi_syarat_jurusan_foreign` (`syarat_jurusan`),
@@ -124,9 +132,11 @@ DROP TABLE IF EXISTS `jurusan`;
 CREATE TABLE `jurusan` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nama` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `jurusan_id_unique` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -135,6 +145,7 @@ CREATE TABLE `jurusan` (
 
 LOCK TABLES `jurusan` WRITE;
 /*!40000 ALTER TABLE `jurusan` DISABLE KEYS */;
+INSERT INTO `jurusan` VALUES (1,'Teknik Informatika',NULL,NULL);
 /*!40000 ALTER TABLE `jurusan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,6 +159,8 @@ DROP TABLE IF EXISTS `kebutuhan`;
 CREATE TABLE `kebutuhan` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nama_instansi` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `kebutuhan_id_unique` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -181,7 +194,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES ('2014_10_12_000000_create_users_table',1),('2014_10_12_100000_create_password_resets_table',1),('2016_03_28_071010_create_cpns_table',1),('2016_03_28_073959_create_pendidikan_table',2),('2016_03_28_074012_create_jurusan_table',2),('2016_03_28_074016_create_cpns_table',3),('2016_03_28_074849_create_cpns_table',4),('2016_03_28_075004_create_cpns_table',5),('2016_03_28_110858_create_kebutuhan_table',6),('2016_03_28_111506_create_cpns_table',6),('2016_03_28_113426_create_divisi_table',7),('2016_03_28_124844_create_cpns_table',8),('2016_03_28_124927_create_cpns_table',9),('2016_03_28_124928_create_alokasi_table',10);
+INSERT INTO `migrations` VALUES ('2014_10_12_000000_create_users_table',1),('2014_10_12_100000_create_password_resets_table',1),('2016_03_28_073959_create_pendidikan_table',1),('2016_03_28_074012_create_jurusan_table',1),('2016_03_28_110858_create_kebutuhan_table',1),('2016_03_28_113426_create_divisi_table',1),('2016_03_28_124927_create_cpns_table',1),('2016_03_28_124928_create_alokasi_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,7 +235,7 @@ CREATE TABLE `pendidikan` (
   `tingkat` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `pendidikan_id_unique` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -231,6 +244,7 @@ CREATE TABLE `pendidikan` (
 
 LOCK TABLES `pendidikan` WRITE;
 /*!40000 ALTER TABLE `pendidikan` DISABLE KEYS */;
+INSERT INTO `pendidikan` VALUES (1,'SMA');
 /*!40000 ALTER TABLE `pendidikan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,4 +286,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-28 20:05:51
+-- Dump completed on 2016-03-29 10:00:22
