@@ -1,17 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 
 use App\CPNS;
 
 class CPNSController extends Controller
 {
 
-	function validateInput(Request $request){
+	public function validateInput(Request $request){
 		$rules = array(
-        	'nik'      			=> 'required|numeric',
+        	'nik'      				=> 'required',
             'nama'      			=> 'required',
             'alamat'    			=> 'required',
             'no_telp'   			=> 'required',
@@ -20,7 +24,7 @@ class CPNSController extends Controller
             'ipk'     				=> 'required|numeric',
             'hasil_tes'			  	=> 'required|numeric',
             'jurusan'     			=> 'required',
-            'pendidikan_akhir'     	=> 'required'
+            'pendidikan'     	=> 'required'
         );
         return Validator::make(Input::all(), $rules);
 	}
@@ -53,13 +57,14 @@ class CPNSController extends Controller
 	public function addCPNS(Request $request) {
        
        /* Validation with Laravel built-in validator*/
-        $validator = validateInput($request);
+        $validator = $this->validateInput($request);
 
         if ($validator->fails()) {
-            return $validator->messages()[0];
+            return $validator->messages()->first();
         } else {
         	/* Check whether or not a CPNS with same NIK exist */
-        	$cpns = CPNS::where('nik', '=' , $nik);
+            $nik = Input::get('nik');
+        	$cpns = CPNS::where('nik', '=' , $nik)->first();
         	if($cpns){
         		return "A CPNS with the same NIK found";
         	} else {
@@ -68,7 +73,7 @@ class CPNSController extends Controller
                     return "No. Telp tidak valid. Hanya boleh mengandung angka";
                 }
                 $cpns = new CPNS;
-                $cpns->nik         			= Input::get('nik');
+                $cpns->nik         			= $nik;
                 $cpns->nama         		= Input::get('nama');
                 $cpns->alamat       		= Input::get('alamat');
                 $cpns->no_telp      		= Input::get('no_telp');
@@ -77,7 +82,7 @@ class CPNSController extends Controller
                 $cpns->ipk      			= Input::get('ipk');
                 $cpns->hasil_tes      		= Input::get('hasil_tes');
                 $cpns->jurusan      		= Input::get('jurusan');
-                $cpns->pendidikan_akhir		= Input::get('pendidikan_akhir');
+                $cpns->pendidikan_akhir		= Input::get('pendidikan');
                 $cpns->save();
                 return 1;
         	}
@@ -92,18 +97,18 @@ class CPNSController extends Controller
      * @param  bigInt  $nik
      * @return Response
      */
-	public function editCPNS(Request $request, $id) {
+	public function editCPNS(Request $request, $nik) {
         
 
-		$cpns = CPNS::where('nik', '=' , $nik);
+		$cpns = CPNS::where('nik', '=' , $nik)->first();
 		if(!$cpns)
 			return 	"Not found";
 
 		/* Validation with Laravel built-in validator*/
-		$validator = validateInput($request);
+		$validator = $this->validateInput($request);
 
         if ($validator->fails()) {
-            return $validator->messages()[0];
+            return $validator->messages()->first();
         } else {
         	
 			if (!preg_match('/^[0-9]+$/', Input::get('no_telp'))){
@@ -117,12 +122,36 @@ class CPNSController extends Controller
 			$cpns->foto      			= Input::get('foto');
 			$cpns->ipk      			= Input::get('ipk');
 			$cpns->hasil_tes      		= Input::get('hasil_tes');
-			$cpns->jurusan      		= Input::get('jurusan');
-			$cpns->pendidikan_akhir		= Input::get('pendidikan_akhir');
+			//$cpns->jurusan      		= Input::get('jurusan');
+			//$cpns->pendidikan_akhir	= Input::get('pendidikan_akhir');
 			$cpns->save();
 			return 1;
 		}
+    }
+
+    /**
+     * Delete a CPNS by NIK
+     *
+     * @param  bigInt  $nik
+     * @return Response
+     */
+	public function deleteCPNS($nik) {
         
+        $cpns = CPNS::where('nik', '=' , $nik)->first();
+        if(!$cpns)
+                return "Not Found";
+
+        /*$inAlokasi = Alokasi::where('cpns_nik' , '=', $nik)->count();
+        if($inAlokasi > 0){
+            return "Cannot delete";
+        } else {
+            $cpns->delete();
+            return 1;
+        }*/
+
+        $cpns->delete();
+		return 1;
+
     }
 
 }

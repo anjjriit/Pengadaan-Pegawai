@@ -13,7 +13,7 @@ class CreateCpnsTable extends Migration
     public function up()
     {
         Schema::create('cpns', function (Blueprint $table) {
-            $table->bigInteger('nik')->unique()->unsigned();
+            $table->string('nik')->unique();
             $table->string('nama',50);
             $table->string('alamat',50);
             $table->string('no_telp',50);
@@ -23,6 +23,8 @@ class CreateCpnsTable extends Migration
             $table->double('hasil_tes',6,4);
             $table->integer('jurusan')->unsigned();
             $table->integer('pendidikan_akhir')->unsigned();
+            $table->timestamps();
+            $table->primary('nik');
             $table->foreign('jurusan')->references('id')->on('jurusan');
             $table->foreign('pendidikan_akhir')->references('id')->on('pendidikan');
         });

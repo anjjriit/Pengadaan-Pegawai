@@ -21,6 +21,7 @@ class CreateDivisiTable extends Migration
             $table->integer('syarat_pendidikan')->unsigned();
             $table->integer('syarat_jurusan')->unsigned();
             $table->integer('kebutuhan_id')->unsigned();
+            $table->timestamps();
             $table->foreign('syarat_pendidikan')->references('id')->on('pendidikan');
             $table->foreign('syarat_jurusan')->references('id')->on('jurusan');
             $table->foreign('kebutuhan_id')->references('id')->on('kebutuhan');

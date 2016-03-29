@@ -15,6 +15,7 @@ class CreatePendidikanTable extends Migration
         Schema::create('pendidikan', function (Blueprint $table) {
             $table->increments('id')->unique()->unsigned();
             $table->string('tingkat',20);
+            $table->timestamps();
         });
     }
 

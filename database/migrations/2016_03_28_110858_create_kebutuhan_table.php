@@ -15,6 +15,7 @@ class CreateKebutuhanTable extends Migration
         Schema::create('kebutuhan', function (Blueprint $table) {
             $table->increments('id')->unique()->unsigned();            
             $table->string('nama_instansi',30);
+            $table->timestamps();
         });
     }
 

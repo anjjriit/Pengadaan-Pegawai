@@ -15,6 +15,7 @@ class CreateJurusanTable extends Migration
         Schema::create('jurusan', function (Blueprint $table) {
             $table->increments('id')->unique()->unsigned();
             $table->string('nama',40);
+            $table->timestamps();
         });
     }
 

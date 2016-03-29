@@ -13,9 +13,10 @@ class CreateAlokasiTable extends Migration
     public function up()
     {
         Schema::create('alokasi', function (Blueprint $table) {
-            $table->bigInteger('cpns_nik')->unsigned();
+            $table->string('cpns_nik');
             $table->string('divisi',30);
             $table->integer('kebutuhan')->unsigned();
+            $table->timestamps();
             $table->foreign('cpns_nik')->references('nik')->on('cpns');
             $table->foreign('divisi')->references('nama_divisi')->on('divisi');
             $table->foreign('kebutuhan')->references('id')->on('kebutuhan');
